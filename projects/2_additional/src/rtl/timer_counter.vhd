@@ -36,6 +36,36 @@ SIGNAL counter_for_min_s : STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL counter_for_h_s   : STD_LOGIC_VECTOR(7 DOWNTO 0);
 begin
 
+	process(clk_i,rst_i) begin
+		if(rst_i = '1') then
+			counter_value_s <= ( others => '0' );
+		elsif rising_edge(clk_i) then
+			if(cnt_rst_i = '1') then
+				counter_value_s <= ( others => '0' );
+			elsif(cnt_en_i = '1') then
+				if(one_sec_i = '1') then
+					counter_value_s <= counter_value_s + 1;
+				else
+					counter_value_s <= counter_value_s;
+				end if;
+			else
+				counter_value_s <= counter_value_rs;
+			end if;
+		end if;
+	end process;
+	
+	process(clk_i,rst_i) begin
+		if(rst_i = '1') then
+			counter_for_min_s <= ( othres => '0' );
+		elsif rising_edge(clk_i) then
+			if(cnt_rst_i = '1') then
+				counter_for_min_s <= ( others => '0');
+			elsif(cnt_en_i = '1') then
+				if(one_sec_i = '1') then
+					counter_for_min_s <= counter_for_min_s + 1;
+				else
+					counter_value
+
 -- DODATI :
 
 -- sistem za brojane sekundi,minuta i sata kao sistem za generisanje izlaza u odnosu na pritisnuti taster
