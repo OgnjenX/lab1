@@ -49,22 +49,50 @@ begin
 					counter_value_s <= counter_value_s;
 				end if;
 			else
-				counter_value_s <= counter_value_rs;
+				counter_value_s <= counter_value_s;
 			end if;
 		end if;
 	end process;
 	
 	process(clk_i,rst_i) begin
 		if(rst_i = '1') then
-			counter_for_min_s <= ( othres => '0' );
+			counter_for_min_s <= ( others => '0' );
 		elsif rising_edge(clk_i) then
 			if(cnt_rst_i = '1') then
 				counter_for_min_s <= ( others => '0');
 			elsif(cnt_en_i = '1') then
-				if(one_sec_i = '1') then
+				if(counter_value_s = 60) then
 					counter_for_min_s <= counter_for_min_s + 1;
 				else
-					counter_value
+					counter_for_min_s <= counter_for_min_s;
+				end if;
+			else
+				counter_for_min_s <= counter_for_min_s;
+			end if;
+		end if;
+	end process;
+	
+	process(clk_i,rst_i) begin
+		if(rst_i = '1') then
+			counter_for_h_s <= ( others => '0' );
+		elsif rising_edge(clk_i) then
+			if(cnt_rst_i = '1') then
+				counter_for_h_s <= ( others => '0');
+			elsif(cnt_en_i = '1') then
+				if(counter_value_s = 3600) then
+					counter_for_h_s <= counter_for_h_s + 1;
+				else
+					counter_for_h_s <= counter_for_h_s;
+				end if;
+			else
+				counter_for_h_s <= counter_for_h_s;
+			end if;
+		end if;
+	end process;
+	
+	led_o <= counter_for_min_s when button_min_i = '1' else
+				counter_for_h_s when button_hour_i = '1' else
+				counter_value_s;
 
 -- DODATI :
 
